@@ -31,7 +31,7 @@ def get_args():
 def main():
     kwargs = get_args()
 
-    capital_one_csv_path = Path(kwargs["capital_one_csv"])
+    capital_one_csv_path = Path(kwargs["source_csv"])
     capital_one_raw_df = convert_to_tiller(
         pl.read_csv( capital_one_csv_path )
     ).drop_nulls()
