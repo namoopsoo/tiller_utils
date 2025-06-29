@@ -48,7 +48,7 @@ def main():
     else:
         raise ValueError(f"Unsupported institution: {institution}")
 
-    new_df = new_df.drop_nulls()
+    # new_df = new_df.drop_nulls()
 
     new_path = csv_path.with_stem(
         utc_ts()
