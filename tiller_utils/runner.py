@@ -35,7 +35,11 @@ def main():
     csv_path = Path(kwargs["source_csv"])
     institution = kwargs.get("institution", "capitalone").lower()
 
-    raw_df = pl.read_csv(csv_path)
+    read_kwargs = {}
+    if institution == "paypal":
+        read_kwargs["dtypes"] = {"Amount": pl.Utf8, "Balance": pl.Utf8}
+
+    raw_df = pl.read_csv(csv_path, **read_kwargs)
 
     if institution == "capitalone":
         new_df = co_convert_to_tiller(raw_df)

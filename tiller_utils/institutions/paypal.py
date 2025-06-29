@@ -16,7 +16,7 @@ def convert_to_tiller(df):
         .with_columns(
             pl.col("Date").alias("Date"),
             pl.col("Name").alias("Description"),
-            pl.col("Amount").cast(pl.Float64).alias("Amount"),
+            pl.col("Amount").str.replace_all(",", "").cast(pl.Float64).alias("Amount"),
             pl.lit("PayPal").alias("Account #"),
         )
         .with_row_index()
