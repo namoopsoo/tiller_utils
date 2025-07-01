@@ -1,4 +1,5 @@
 import argparse
+import json
 import polars as pl
 from pathlib import Path
 from tiller_utils.institutions.capitalone import convert_to_tiller as co_convert_to_tiller, agg_amount_type
@@ -17,6 +18,9 @@ def bake_options():
         [['--institution', '-i'],
             {'action': 'store',
                 'help': 'from institution type'},],
+        [['--account-map', '-m'],
+            {'action': 'store',
+                'help': 'json for literals'},],
     ]
 
 def get_args():
@@ -41,10 +45,12 @@ def main():
 
     raw_df = pl.read_csv(csv_path, **read_kwargs)
 
+    account_map = json.loads(Path(kwargs["account_map"]).read_text())
+
     if institution == "capitalone":
         new_df = co_convert_to_tiller(raw_df)
     elif institution == "paypal":
-        new_df = paypal_convert_to_tiller(raw_df)
+        new_df = paypal_convert_to_tiller(raw_df, account_map)
     else:
         raise ValueError(f"Unsupported institution: {institution}")
 
